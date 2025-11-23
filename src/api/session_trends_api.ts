@@ -1,8 +1,8 @@
 import axiosInstance from "./axios_instance";
 
-export const get_user_performance = async () => {
+export const get_session_trends = async (days: number) => {
   const { data } = await axiosInstance.get(
-    "/api/interview/analytics/user-performance"
+    `/api/interview/analytics/score-trends?days=${days}`
   );
   return data;
 };

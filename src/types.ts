@@ -49,6 +49,8 @@ export interface UserTableProps {
 export interface RetryProps {
   refetch: () => void;
   error?: AxiosError | Error | unknown;
+  minimal?: boolean;
+  className?: string;
 }
 
 export const filterKeyMap: Record<string, keyof UserProps> = {
@@ -67,3 +69,21 @@ export const map = {
   stable: "warning",
 } as const;
 export type TrendKey = keyof typeof map;
+
+export type TrendDays = 7 | 30 | 90;
+
+export interface TrendsApiProps {
+  date: string;
+  avg_score: number;
+  count: number;
+}
+[];
+export interface TrendsChartProps {
+  data: { date: string; avg_score: number; count: number }[];
+  days: number;
+  onDaysChange: (value: TrendDays) => void;
+  isLoading: boolean;
+  isError: boolean;
+  error?: Error | null;
+  refetch: () => void;
+}

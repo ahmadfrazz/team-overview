@@ -3,8 +3,14 @@ import { Button } from "../ui/button";
 import { RetryProps } from "@/types";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
-const Retry: React.FC<RetryProps> = ({ refetch, error }) => {
+const Retry: React.FC<RetryProps> = ({
+  refetch,
+  error,
+  minimal = false,
+  className,
+}) => {
   const text = "Something is going crazy!";
 
   const err = error as AxiosError;
@@ -18,8 +24,16 @@ const Retry: React.FC<RetryProps> = ({ refetch, error }) => {
   });
 
   return (
-    <div className="h-[70dvh] flex flex-col items-center justify-center gap-5">
-      <Squirrel className="stroke-[0.3] size-30 sm:size-50" />
+    <div
+      className={cn(
+        "h-[70dvh] flex flex-col items-center justify-center gap-5",
+        {
+          "h-auto gap-3": minimal,
+        },
+        className
+      )}
+    >
+      {!minimal && <Squirrel className="stroke-[0.3] size-30 sm:size-50" />}
       <span className="text-foreground-muted font-mono">{text}</span>
       <Button onClick={() => refetch()} className="text-white font-mono">
         <RotateCw />
