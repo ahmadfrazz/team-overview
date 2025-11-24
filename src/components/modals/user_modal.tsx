@@ -53,7 +53,7 @@ export const UserModal = ({ open, onClose, user }: UserModalProps) => {
                       </Badge>
                     </div>
                   ) : (
-                    <p className="text-[14px]">{formatted}</p>
+                    <p className="text-sm">{formatted}</p>
                   )}
                 </div>
               );

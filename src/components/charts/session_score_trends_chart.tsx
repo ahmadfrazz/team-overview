@@ -43,10 +43,7 @@ export const SessionScoreTrendsChart = ({
           onValueChange={(val) => onDaysChange(Number(val) as TrendDays)}
         >
           <SelectTrigger aria-label="Select a value" className="w-40">
-            <div className="flex justify-between items-center w-full">
-              <SelectValue placeholder="Select a value" />
-              {isLoading && <Loader2 className="animate-spin h-5 w-5" />}
-            </div>
+            <SelectValue placeholder="Select a value" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="90">Last 3 months</SelectItem>

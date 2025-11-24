@@ -4,24 +4,28 @@ import { RetryProps } from "@/types";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 const Retry: React.FC<RetryProps> = ({
   refetch,
   error,
   minimal = false,
   className,
+  showToast = true,
 }) => {
   const text = "Something is going crazy!";
 
   const err = error as AxiosError;
   const data = err?.response?.data as { error?: string } | undefined;
-  toast.error(`Uhh.. ${err?.response?.status || "Unknown"} Error!`, {
-    description: data?.error || text,
-    action: {
-      label: "Retry",
-      onClick: () => refetch(),
-    },
-  });
+
+  useEffect(() => {
+    if (!error) return;
+    if (showToast) {
+      toast.error(`Uhh.. ${err?.response?.status || "Unknown"} Error!`, {
+        description: data?.error || text,
+      });
+    }
+  }, [error]);
 
   return (
     <div

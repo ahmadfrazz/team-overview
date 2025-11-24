@@ -43,6 +43,7 @@ type GenericTableProps<TData> = {
   columns: ColumnDef<TData>[];
   onRowClick?: (row: TData) => void;
   draggableRows?: boolean;
+  parentRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 const DraggableRow = <TData,>({ row, children }: DraggableRowProps<TData>) => {
@@ -79,6 +80,7 @@ export function DataTable<TData extends { id: string }>({
   columns,
   onRowClick,
   draggableRows = false,
+  parentRef,
 }: GenericTableProps<TData>) {
   const [rows, setRows] = useState(data);
 
@@ -110,11 +112,12 @@ export function DataTable<TData extends { id: string }>({
     setRows(arrayMove(rows, oldIndex, newIndex));
   };
 
-  const parentRef = useRef<HTMLDivElement | null>(null);
+  const internalRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = parentRef ?? internalRef;
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => scrollRef.current,
     estimateSize: () => 42,
     overscan: 8,
   });
@@ -211,7 +214,7 @@ export function DataTable<TData extends { id: string }>({
       onDragEnd={onDragEnd}
     >
       <div
-        ref={parentRef}
+        ref={scrollRef}
         className="h-[400px] rounded-md border overflow-auto relative"
       >
         {tableContent}
@@ -224,7 +227,7 @@ export function DataTable<TData extends { id: string }>({
     </DndContext>
   ) : (
     <div
-      ref={parentRef}
+      ref={scrollRef}
       className="h-[400px] rounded-md border overflow-auto relative"
     >
       {tableContent}

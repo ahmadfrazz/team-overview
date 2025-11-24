@@ -51,6 +51,7 @@ export interface RetryProps {
   error?: AxiosError | Error | unknown;
   minimal?: boolean;
   className?: string;
+  showToast?: boolean;
 }
 
 export const filterKeyMap: Record<string, keyof UserProps> = {
@@ -87,3 +88,62 @@ export interface TrendsChartProps {
   error?: Error | null;
   refetch: () => void;
 }
+
+// sessions props
+export interface SessionsProps {
+  data: SessionScrollPageProps | any;
+  onRowClick: (id: string) => void;
+  isLoading: boolean;
+  isError: boolean;
+  error?: Error | null;
+  refetch: () => void;
+  fetchNextPage: () => Promise<unknown>;
+  hasNextPage: boolean;
+}
+export type SessionMetricsProp = {
+  confidence: number;
+  clarity: number;
+  listening: number;
+};
+export type SessionProp = {
+  id: string;
+  user_id: string;
+  title: string;
+  score: number;
+  metrics: SessionMetricsProp;
+  created_at: string;
+  duration: number;
+};
+export type SessionApiResponseProp = {
+  sessions: SessionProp[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+export type SessionScrollPageProps = {
+  pageParams: number[];
+  pages: SessionApiResponseProp[];
+};
+
+export type InfiniteQueryData = {
+  pages: SessionApiResponseProp[];
+  pageParams: unknown[];
+};
+
+export type UseInfiniteSessionsProps = {
+  data: InfiniteQueryData | undefined;
+  fetchNextPage: () => Promise<unknown>;
+  hasNextPage: boolean | undefined;
+};
+
+export type SingleSessionProp = {
+  id: string;
+  user_id: string;
+  feedback: string;
+  transcript: {
+    text: string;
+    secondsFromStart: number;
+    speaker: string;
+  }[];
+};
