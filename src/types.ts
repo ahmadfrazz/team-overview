@@ -1,4 +1,4 @@
-import { Row } from "@tanstack/react-table";
+import { ColumnDef, Row, VisibilityState } from "@tanstack/react-table";
 import { AxiosError } from "axios";
 
 export interface UserProps {
@@ -146,4 +146,11 @@ export type SingleSessionProp = {
     secondsFromStart: number;
     speaker: string;
   }[];
+};
+
+export type ColumnVisibilityDropdownProps<TData> = {
+  columns: ColumnDef<TData>[];
+  columnVisibility: VisibilityState;
+  setColumnVisibility: React.Dispatch<React.SetStateAction<VisibilityState>>;
+  className?: string;
 };

@@ -6,6 +6,7 @@ import Retry from "../retry/retry";
 import { Loader2 } from "lucide-react";
 import { useInfiniteSessions } from "@/hooks/use_infinite_sessions";
 import { ColumnVisibilityDropdown } from "../column_visibility_dropdown/column_visibility_dropdown";
+import { format } from "date-fns";
 
 const SessionsTable = ({
   data,
@@ -32,26 +33,41 @@ const SessionsTable = ({
         cell: ({ getValue }) => (
           <div className="min-w-max">{String(getValue())}</div>
         ),
-        enableSorting: false,
         enableHiding: false,
       },
-      { accessorKey: "score", header: "Score" },
+      {
+        accessorKey: "score",
+        header: "Score",
+      },
       {
         accessorFn: (row) => row.metrics?.confidence,
         id: "confidence",
         header: "Confidence",
+        enableSorting: false,
       },
       {
         accessorFn: (row) => row.metrics?.clarity,
         id: "clarity",
         header: "Clarity",
+        enableSorting: false,
       },
       {
         accessorFn: (row) => row.metrics?.listening,
         id: "listening",
         header: "Listening",
+        enableSorting: false,
       },
       { accessorKey: "duration", header: "Duration" },
+      {
+        accessorKey: "created_at",
+        header: "Created At",
+        enableHiding: false,
+        cell: ({ getValue }) => {
+          const date = getValue() as string | Date;
+          if (!date) return "-";
+          return format(new Date(date), "dd-MM-yyyy");
+        },
+      },
     ],
     []
   );
@@ -79,6 +95,7 @@ const SessionsTable = ({
       />
       <DataTable
         data={sessions}
+        draggableRows
         columns={columns}
         parentRef={scrollRef}
         onRowClick={(user) => onRowClick(user.id)}

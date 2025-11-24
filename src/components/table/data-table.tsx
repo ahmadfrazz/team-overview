@@ -187,8 +187,10 @@ export function DataTable<TData extends { id: string }>({
 
                     {canSort && (
                       <>
-                        {isAsc && <ArrowUp size={15} />}
-                        {isDesc && <ArrowDown size={15} />}
+                        {isAsc && <ArrowUp className="text-primary size-4" />}
+                        {isDesc && (
+                          <ArrowDown className="text-primary size-4" />
+                        )}
                       </>
                     )}
                   </div>

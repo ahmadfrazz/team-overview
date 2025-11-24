@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+## Getting Started
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm i
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# KEY POINTS
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `Responsive Layout`: with respect to any device size
+- `Themes`: Light - Dark themes with ability to expand further
+- `API Errors`: Handled all kind of api errors gracefully with centralized approach
+- `Performance`: No performance degradation while showing large number of (thousands) records
+- `Reusability`: Made sure to keep modular, self contained components, hooks, functions with ability to reuse. And ability to scale and expand further
+- `Architecture`: Used clean and organized architecture so project can be scaled easily and manageable structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# MAIN ROUTES
+
+There will be 2 main pages
+
+1. /overview
+2. /sessions
+
+# 1. USER-OVERVIEW
+
+This page conatains
+
+- Top Performers List
+- Teams Avg. Scroe Bar Chart
+- Users Table with filters
+- Filters states are sync with URL, and can be restored on back and forward navigations
+- Applying any filter will result in filtered data as per value on all three sections (i.e Top Performers List, Bar Chart, User Table)
+- User Table Rows are draggable, clickable
+- Clicking on any row will show dialog, with sync url state with dialog data id
+- Clicking on User Table columns will sort the data of that columns in Asc, Desc and Default state
+- Applied virtualization to the User Table to maintain the app performance and smooth scrolling while showing the large number of data
+
+# 2. USER-SESSIONS
+
+This page conatains
+
+- Session Trends Line Chart with days (7 days, 30 days, 90 days) filter with sync state with URL, all api errors are handled gracefully here
+- Then comes the Sessions Table: Paginated Data - fetches next page data like a infinite scroll
+- Sessions table is also configured that way so it can show thousands of records without compromising performance, all api errors are handled gracefully like refetching and next page fetch fail
+- Handled Table header visibility with some columns not allowed to hide/show
+- All table rows are draggable with option to have simple table without draggable rows
+- While clicking on row further shows details in dialog of specific session like transcript with thousands of data
+- Showed large no. of list of transcript records with smooth scrolling and fast performance
+- Handled Transcript api error with ability to refetch
+
+```
+
 ```

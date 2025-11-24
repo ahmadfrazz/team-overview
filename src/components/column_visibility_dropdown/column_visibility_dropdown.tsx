@@ -6,15 +6,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
-import { ColumnDef, VisibilityState } from "@tanstack/react-table";
+import { VisibilityState } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
-
-type ColumnVisibilityDropdownProps<TData> = {
-  columns: ColumnDef<TData>[];
-  columnVisibility: VisibilityState;
-  setColumnVisibility: React.Dispatch<React.SetStateAction<VisibilityState>>;
-  className: string;
-};
+import { ColumnVisibilityDropdownProps } from "@/types";
 
 export const ColumnVisibilityDropdown = <TData,>({
   columns,
