@@ -1,10 +1,11 @@
 import { SessionProp, SessionsProps } from "@/types";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DataTable } from "../table/data-table";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, VisibilityState } from "@tanstack/react-table";
 import Retry from "../retry/retry";
 import { Loader2 } from "lucide-react";
 import { useInfiniteSessions } from "@/hooks/use_infinite_sessions";
+import { ColumnVisibilityDropdown } from "../column_visibility_dropdown/column_visibility_dropdown";
 
 const SessionsTable = ({
   data,
@@ -21,6 +22,7 @@ const SessionsTable = ({
     fetchNextPage,
     hasNextPage,
   });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const columns = useMemo<ColumnDef<SessionProp>[]>(
     () => [
@@ -30,6 +32,8 @@ const SessionsTable = ({
         cell: ({ getValue }) => (
           <div className="min-w-max">{String(getValue())}</div>
         ),
+        enableSorting: false,
+        enableHiding: false,
       },
       { accessorKey: "score", header: "Score" },
       {
@@ -66,12 +70,20 @@ const SessionsTable = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative space-y-2">
+      <ColumnVisibilityDropdown
+        columns={columns}
+        columnVisibility={columnVisibility}
+        setColumnVisibility={setColumnVisibility}
+        className="flex justify-end mb-2"
+      />
       <DataTable
         data={sessions}
         columns={columns}
         parentRef={scrollRef}
         onRowClick={(user) => onRowClick(user.id)}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
       />
 
       {isError && (

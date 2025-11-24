@@ -4,6 +4,9 @@ import {
   getCoreRowModel,
   flexRender,
   Row,
+  getSortedRowModel,
+  SortingState,
+  VisibilityState,
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useRef, useState } from "react";
@@ -31,7 +34,8 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
-import { GripHorizontal } from "lucide-react";
+import { ArrowDown, ArrowUp, GripHorizontal } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type DraggableRowProps<TData> = {
   row: Row<TData>;
@@ -81,8 +85,21 @@ export function DataTable<TData extends { id: string }>({
   onRowClick,
   draggableRows = false,
   parentRef,
-}: GenericTableProps<TData>) {
+  columnVisibility: externalColumnVisibility,
+  onColumnVisibilityChange,
+}: GenericTableProps<TData> & {
+  columnVisibility?: VisibilityState;
+  onColumnVisibilityChange?: (updater: VisibilityState) => void;
+}) {
   const [rows, setRows] = useState(data);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  useEffect(() => {
+    if (externalColumnVisibility) {
+      setColumnVisibility(externalColumnVisibility);
+    }
+  }, [externalColumnVisibility]);
 
   useEffect(() => {
     setRows(data);
@@ -92,6 +109,15 @@ export function DataTable<TData extends { id: string }>({
     data: rows,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: (updater) => {
+      setColumnVisibility(updater);
+      onColumnVisibilityChange?.(
+        typeof updater === "function" ? updater(columnVisibility) : updater
+      );
+    },
   });
 
   const sensors = useSensors(
@@ -130,20 +156,45 @@ export function DataTable<TData extends { id: string }>({
 
   const tableContent = (
     <Table>
-      <TableHeader>
+      <TableHeader className="sticky top-0 z-20 bg-background">
         {table.getHeaderGroups().map((group) => (
           <TableRow key={group.id}>
             {draggableRows && <TableHead className="w-6" />}
-            {group.headers.map((header) => (
-              <TableHead key={header.id} className="min-w-32 w-32">
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
+            {group.headers.map((header) => {
+              const canSort = header.column.getCanSort();
+              const sorted = header.column.getIsSorted();
+              const isAsc = sorted === "asc";
+              const isDesc = sorted === "desc";
+              return (
+                <TableHead
+                  key={header.id}
+                  className={cn("min-w-32 w-32", {
+                    "cursor-pointer select-none": canSort,
+                  })}
+                  onClick={
+                    canSort
+                      ? header.column.getToggleSortingHandler()
+                      : undefined
+                  }
+                >
+                  <div className="flex items-center gap-1">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+
+                    {canSort && (
+                      <>
+                        {isAsc && <ArrowUp size={15} />}
+                        {isDesc && <ArrowDown size={15} />}
+                      </>
                     )}
-              </TableHead>
-            ))}
+                  </div>
+                </TableHead>
+              );
+            })}
           </TableRow>
         ))}
       </TableHeader>

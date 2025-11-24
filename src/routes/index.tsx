@@ -1,11 +1,19 @@
 import { Loader2 } from "lucide-react";
-import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 const UserOverview = lazy(() => import("@/pages/overview/user_overview"));
 const UserSessions = lazy(() => import("@/pages/sessions/user_sessions"));
 
 const AppRoutes = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pathname]);
+
   return (
     <Suspense
       fallback={
