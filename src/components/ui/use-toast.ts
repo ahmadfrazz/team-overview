@@ -1,5 +1,5 @@
 import * as React from "react";
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ToastActionElement = React.ReactElement<any>;
 
 export interface Toast {
@@ -20,7 +20,7 @@ type ToasterToast = Toast & {
   action?: ToastActionElement;
 };
 
-const actionTypes = {
+export const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
   DISMISS_TOAST: "DISMISS_TOAST",
@@ -140,7 +140,7 @@ function dispatch(action: Action) {
   });
 }
 
-export function toast({ ...props }: Omit<ToasterToast, "id">) {
+export function toast() {
   const id = genId();
 
   const update = (props: ToasterToast) =>

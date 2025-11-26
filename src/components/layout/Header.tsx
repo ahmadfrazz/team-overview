@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
 import { ThemeToggle } from "../theme_toggle/theme_toggle";
 
 /**

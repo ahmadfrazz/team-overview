@@ -1,6 +1,5 @@
 // src/components/layout/Sidebar.tsx
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 /**
  * Sidebar navigation links
@@ -10,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 export default function Sidebar() {
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     `block px-4 py-3 rounded-md text-sm ${
-      isActive ? 'bg-primary/10 font-medium' : 'hover:bg-muted/50'
+      isActive ? "bg-primary/10 font-medium" : "hover:bg-muted/50"
     }`;
 
   return (

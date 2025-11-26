@@ -28,13 +28,13 @@ export type FiltersRowProps = {
 };
 
 export interface TopPerformersProps {
-  users: any[];
+  users: UserProps[];
 }
 
 export interface UserModalProps {
   open: boolean;
   onClose: () => void;
-  user: any;
+  user: UserProps;
 }
 
 export interface ChartProps {
@@ -42,7 +42,7 @@ export interface ChartProps {
 }
 
 export interface UserTableProps {
-  data: any[];
+  data: UserProps[];
   onUserClick: (id: string) => void;
 }
 
@@ -73,12 +73,6 @@ export type TrendKey = keyof typeof map;
 
 export type TrendDays = 7 | 30 | 90;
 
-export interface TrendsApiProps {
-  date: string;
-  avg_score: number;
-  count: number;
-}
-[];
 export interface TrendsChartProps {
   data: { date: string; avg_score: number; count: number }[];
   days: number;
@@ -91,6 +85,7 @@ export interface TrendsChartProps {
 
 // sessions props
 export interface SessionsProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: SessionScrollPageProps | any;
   onRowClick: (id: string) => void;
   isLoading: boolean;
